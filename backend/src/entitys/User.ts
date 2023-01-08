@@ -5,12 +5,15 @@ export class User extends BaseEntity {
    @PrimaryGeneratedColumn()
    id: number
 
-   @Column()
+   @Column({ type: 'varchar', length: 10 })
    first_name: string
 
-   @Column()
+   @Column({ type: 'varchar', length: 10 })
    last_name: string
 
-   @Column()
+   @Column({ type: 'varchar', length: 10 })
    username: string
+
+   @Column({ type: 'varchar', length: 8 })
+   password: string
 }
