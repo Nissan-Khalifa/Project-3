@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm'
+import {
+   Entity,
+   PrimaryGeneratedColumn,
+   Column,
+   BaseEntity,
+   ManyToMany,
+} from 'typeorm'
+import { Vacation } from './Vacation'
 
-@Entity()
+@Entity('users')
 export class User extends BaseEntity {
    @PrimaryGeneratedColumn()
    id: number
@@ -14,6 +21,11 @@ export class User extends BaseEntity {
    @Column({ type: 'varchar', length: 10 })
    username: string
 
-   @Column({ type: 'varchar', length: 8 })
+   @Column({ type: 'varchar'})
    password: string
+
+   @ManyToMany(() => Vacation, (vacation) => vacation.users, {
+      onDelete: 'CASCADE',
+   })
+   vacations: Vacation[]
 }
