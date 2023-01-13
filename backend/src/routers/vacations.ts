@@ -3,6 +3,7 @@ import {
    createVacation,
    findVacations,
    deleteVacationById,
+   updateVacation,
 } from '../controllers/vacations'
 
 const router: Router = Router()
@@ -34,6 +35,19 @@ router.post('/', async (req: Request, res: Response) => {
    try {
       const newVacation = await createVacation(req.body)
       res.send(newVacation)
+   } catch (error) {
+      console.error(error.message)
+      res.sendStatus(500)
+   }
+})
+
+// update a vacation by id -- must be admin!
+router.patch('/:id', async (req: Request, res: Response) => {
+   try {
+      const isUpdated = await updateVacation(+req.params.id, req.body)
+      isUpdated
+         ? res.send(`Vacation ${req.params.id} is updated`)
+         : res.send('Nothing is updated')
    } catch (error) {
       console.error(error.message)
       res.sendStatus(500)

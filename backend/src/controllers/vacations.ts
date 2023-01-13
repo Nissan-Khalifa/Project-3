@@ -15,6 +15,15 @@ export const createVacation = async (record: Vacation): Promise<Vacation> => {
    return await vacation.save()
 }
 
+// update vacation controller
+export const updateVacation = async (
+   vacationId: number,
+   data: Vacation
+): Promise<boolean> => {
+   const res = await Vacation.update(vacationId, data)
+   return res.affected ? true : false
+}
+
 // delete vacation controller
 export const deleteVacationById = async (
    vacationId: number
