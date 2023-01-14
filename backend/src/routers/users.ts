@@ -1,5 +1,11 @@
 import { Request, Response, Router } from 'express'
+import { validationResult } from 'express-validator'
 import { findUsers, createUser, deleteUserById } from '../controllers/users'
+import matchedData from '../middlewares/matchedData'
+import { loginValidator, registerValidator } from '../middlewares/formValidator'
+import passwordValidator from '../middlewares/passwordValidator'
+import passwordEncryptor from '../middlewares/passwordEncryptor'
+import jwtSign from '../middlewares/jwtSign'
 
 const router: Router = Router()
 
@@ -26,15 +32,42 @@ router.get('/', async (req: Request, res: Response) => {
 })
 
 // create new user (register)
-router.post('/', async (req: Request, res: Response) => {
-   try {
-      const newUser = await createUser(req.body)
-      res.send(newUser)
-   } catch (error) {
-      console.error(error.message)
-      res.sendStatus(500)
+// router.post('/', async (req: Request, res: Response) => {
+//    try {
+//       const newUser = await createUser(req.body)
+//       res.send(newUser)
+//    } catch (error) {
+//       console.error(error.message)
+//       res.sendStatus(500)
+//    }
+// })
+
+router.post(
+   '/register',
+   [
+      matchedData,
+      ...loginValidator,
+      passwordValidator,
+      passwordEncryptor,
+      jwtSign,
+   ],
+   async (req: Request, res: Response) => {
+      try {
+         if (!validationResult(req).isEmpty()) {
+            return res
+               .status(400)
+               .send({ errors: validationResult(req).array() })
+         }
+         const newUser = await createUser(req.body)
+         // res.send(newUser)
+         res.send({ accessToken: res.locals.accessToken })
+
+      } catch (error) {
+         console.error(error.message)
+         res.sendStatus(500)
+      }
    }
-})
+)
 
 // delete user by id -- for user!
 router.delete('/:id', async (req: Request, res: Response) => {

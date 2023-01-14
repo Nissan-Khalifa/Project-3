@@ -21,10 +21,10 @@ export class Vacation extends BaseEntity {
    @Column({ type: 'varchar', length: 255, nullable: false })
    discreption: string
 
-   @Column()
+   @Column({ nullable: false })
    destination: string
 
-   @Column()
+   @Column({ nullable: false })
    img_url: string
 
    @Column({ nullable: false })
@@ -33,13 +33,13 @@ export class Vacation extends BaseEntity {
    @Column({ nullable: false })
    end_date: Date
 
-   @Column('decimal', { precision: 6 })
+   @Column('decimal', { precision: 6, nullable: false })
    price: string
 
    @Column({ type: 'enum', enum: Currency, nullable: false })
    currency: Currency
 
-   @Column()
+   @Column({ nullable: false })
    followers: number
 
    @Column({ nullable: false })
