@@ -8,7 +8,7 @@ export const findUsers = async (userId?: number): Promise<User[]> => {
 }
 
 // create a new user controller
-export const createUser = async (record: User): Promise<User> => {
+export const createUser = async (record: any): Promise<User> => {
    const user = User.create(record)
    return await user.save()
 }

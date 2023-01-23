@@ -6,6 +6,8 @@ import { loginValidator, registerValidator } from '../middlewares/formValidator'
 import passwordValidator from '../middlewares/passwordValidator'
 import passwordEncryptor from '../middlewares/passwordEncryptor'
 import jwtSign from '../middlewares/jwtSign'
+import { User } from '../entitys/User'
+import adminValidator from '../middlewares/adminValidator'
 
 const router: Router = Router()
 
@@ -31,17 +33,6 @@ router.get('/', async (req: Request, res: Response) => {
    }
 })
 
-// create new user (register)
-// router.post('/', async (req: Request, res: Response) => {
-//    try {
-//       const newUser = await createUser(req.body)
-//       res.send(newUser)
-//    } catch (error) {
-//       console.error(error.message)
-//       res.sendStatus(500)
-//    }
-// })
-
 router.post(
    '/register',
    [
@@ -58,10 +49,31 @@ router.post(
                .status(400)
                .send({ errors: validationResult(req).array() })
          }
-         const newUser = await createUser(req.body)
-         // res.send(newUser)
-         res.send({ accessToken: res.locals.accessToken })
+         const newUser = await createUser({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            username: req.body.username,
+            password: res.locals.password,
+         })
+         res.send({ newUser, accessToken: res.locals.accessToken })
+      } catch (error) {
+         console.error(error.message)
+         res.sendStatus(500)
+      }
+   }
+)
 
+router.post(
+   '/login',
+   [matchedData, ...loginValidator, adminValidator, jwtSign],
+   async (req: Request, res: Response) => {
+      try {
+         if (!validationResult(req).isEmpty()) {
+            return res
+               .status(400)
+               .send({ errors: validationResult(req).array() })
+         }
+         res.send({ accessToken: res.locals.accessToken })
       } catch (error) {
          console.error(error.message)
          res.sendStatus(500)
