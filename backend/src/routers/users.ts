@@ -1,13 +1,18 @@
 import { Request, Response, Router } from 'express'
 import { validationResult } from 'express-validator'
 import { findUsers, createUser, deleteUserById } from '../controllers/users'
-import matchedData from '../middlewares/matchedData'
-import { loginValidator, registerValidator } from '../middlewares/formValidator'
+import matchedDataForUser from '../middlewares/matchedDataForUser'
+import {
+   formValidator,
+   registerValidator,
+} from '../middlewares/formValidatorForUser'
 import passwordValidator from '../middlewares/passwordValidator'
 import passwordEncryptor from '../middlewares/passwordEncryptor'
 import jwtSign from '../middlewares/jwtSign'
 import { User } from '../entitys/User'
-import adminValidator from '../middlewares/adminValidator'
+import loginValidator from '../middlewares/loginValidator'
+import jwtVerify from '../middlewares/authintications/jwtVerify'
+import authinticateAdmin from '../middlewares/authintications/authinticateAdmin'
 
 const router: Router = Router()
 
@@ -36,8 +41,8 @@ router.get('/', async (req: Request, res: Response) => {
 router.post(
    '/register',
    [
-      matchedData,
-      ...loginValidator,
+      matchedDataForUser,
+      ...formValidator,
       passwordValidator,
       passwordEncryptor,
       jwtSign,
@@ -49,10 +54,14 @@ router.post(
                .status(400)
                .send({ errors: validationResult(req).array() })
          }
-         const newUser = await createUser({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            username: req.body.username,
+         // const newUser = await createUser({
+         //    first_name: req.body.first_name,
+         //    last_name: req.body.last_name,
+         //    username: req.body.username,
+         //    password: res.locals.password,
+         // })
+         const newUser: User = await createUser({
+            ...req.body,
             password: res.locals.password,
          })
          res.send({ newUser, accessToken: res.locals.accessToken })
@@ -65,7 +74,7 @@ router.post(
 
 router.post(
    '/login',
-   [matchedData, ...loginValidator, adminValidator, jwtSign],
+   [matchedDataForUser, ...formValidator, loginValidator, jwtSign],
    async (req: Request, res: Response) => {
       try {
          if (!validationResult(req).isEmpty()) {
@@ -73,7 +82,10 @@ router.post(
                .status(400)
                .send({ errors: validationResult(req).array() })
          }
-         res.send({ accessToken: res.locals.accessToken })
+         res.send({
+            accessToken: res.locals.accessToken,
+            isAdmin: res.locals.is_admin,
+         })
       } catch (error) {
          console.error(error.message)
          res.sendStatus(500)
@@ -82,16 +94,20 @@ router.post(
 )
 
 // delete user by id -- for user!
-router.delete('/:id', async (req: Request, res: Response) => {
-   try {
-      const isDeleted = await deleteUserById(+req.params.id)
-      isDeleted
-         ? res.send(`User ${req.params.id} is deleted`)
-         : res.send('Nothing is deleted')
-   } catch (error) {
-      console.error(error.message)
-      res.sendStatus(500)
+router.delete(
+   '/:id',
+   [jwtVerify, authinticateAdmin],
+   async (req: Request, res: Response) => {
+      try {
+         const isDeleted = await deleteUserById(+req.params.id)
+         isDeleted
+            ? res.send(`User ${req.params.id} is deleted`)
+            : res.send('Nothing is deleted')
+      } catch (error) {
+         console.error(error.message)
+         res.sendStatus(500)
+      }
    }
-})
+)
 
 export default router

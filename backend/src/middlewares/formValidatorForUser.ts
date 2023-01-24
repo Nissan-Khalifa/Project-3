@@ -10,4 +10,4 @@ const registerValidator = [
    body('last_name').notEmpty().withMessage('Last name is required'),
 ]
 
-export { registerValidator, validator as loginValidator }
+export { registerValidator, validator as formValidator }

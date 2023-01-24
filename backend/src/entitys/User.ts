@@ -24,6 +24,9 @@ export class User extends BaseEntity {
    @Column({ type: 'varchar', nullable: false })
    password: string
 
+   @Column({ type: 'boolean', nullable: false, default: false })
+   is_admin: boolean
+
    @ManyToMany(() => Vacation, (vacation) => vacation.users, {
       onDelete: 'CASCADE',
    })

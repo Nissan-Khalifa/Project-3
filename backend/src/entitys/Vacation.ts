@@ -36,9 +36,6 @@ export class Vacation extends BaseEntity {
    @Column('decimal', { precision: 6, nullable: false })
    price: string
 
-   @Column({ type: 'enum', enum: Currency, nullable: false })
-   currency: Currency
-
    @Column({ nullable: false })
    followers: number
 

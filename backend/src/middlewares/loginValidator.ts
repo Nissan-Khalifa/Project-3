@@ -1,6 +1,5 @@
 import { compare } from 'bcryptjs'
 import { NextFunction, Request, Response } from 'express'
-import { findUsers } from '../controllers/users'
 import { User } from '../entitys/User'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
@@ -8,6 +7,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       const user = await User.findOne({
          where: { username: req.body.username },
       })
+
       if (!user) {
          return res.status(401).send({ errors: ['username does not exists'] })
       }
@@ -16,6 +16,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       if (!isPasswordValid) {
          return res.status(401).send({ errors: ['password is invalid'] })
       }
+
+      res.locals.is_admin = user.is_admin
 
       next()
    } catch (error) {

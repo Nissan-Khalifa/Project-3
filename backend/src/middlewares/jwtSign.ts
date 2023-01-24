@@ -7,10 +7,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
          return res.sendStatus(500)
       }
 
-      const { email } = req.body
+      const { username } = req.body
 
       jwt.sign(
-         { email },
+         { username },
          process.env.ACCESS_TOKEN_SECRET,
          { expiresIn: '20m' },
          (err: Error | null, accessToken: string | undefined) => {
