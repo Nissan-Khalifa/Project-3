@@ -2,10 +2,7 @@ import { Request, Response, Router } from 'express'
 import { validationResult } from 'express-validator'
 import { findUsers, createUser, deleteUserById } from '../controllers/users'
 import matchedDataForUser from '../middlewares/matchedDataForUser'
-import {
-   formValidator,
-   registerValidator,
-} from '../middlewares/formValidatorForUser'
+import { formValidator } from '../middlewares/formValidatorForUser'
 import passwordValidator from '../middlewares/passwordValidator'
 import passwordEncryptor from '../middlewares/passwordEncryptor'
 import jwtSign from '../middlewares/jwtSign'

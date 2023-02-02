@@ -1,3 +1,134 @@
-.App {
+.main {
   text-align: center;
+}
+
+.login-container,
+.register-container {
+  margin: auto;
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px #9ab5d6;
+}
+
+.register-container {
+  height: 300px;
+}
+
+.form-input {
+  margin: 5px;
+  height: 30px;
+  width: 200px;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #9ab5d6;
+}
+
+.password-container {
+  position: relative;
+}
+
+.fa-eye {
+  position: absolute;
+  top: 28%;
+  right: 4%;
+  cursor: pointer;
+  color: lightgray;
+}
+
+.form-submit-btn {
+  margin: 5px;
+  height: 35px;
+  width: 210px;
+
+  align-items: center;
+  background-color: #0a66c2;
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, 'Segoe UI', Roboto,
+     'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell,
+     'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+     'Lucida Grande', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+     box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s,
+     color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}
+
+.form-submit-btn:hover,
+.form-submit-btn:focus {
+  background-color: #16437e;
+  color: #ffffff;
+}
+
+.form-submit-btn:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, 0.7);
+}
+
+.form-submit-btn:disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.change-form-link {
+  color: black;
+  font-size: small;
+}
+
+.change-form-link:link {
+  text-decoration: none;
+}
+.change-form-link:visited {
+  text-decoration: none;
+}
+.change-form-link:hover {
+  text-decoration: underline;
+}
+.change-form-link:active {
+  text-decoration: underline;
+}
+
+.main-container,
+.feed {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.feed {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.vacation-card {
+  width: 400px;
+  height: 400px;
+  margin: 50px;
+  border: 1px solid red;
 }
