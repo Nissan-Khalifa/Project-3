@@ -8,8 +8,8 @@ import passwordEncryptor from '../middlewares/passwordEncryptor'
 import jwtSign from '../middlewares/jwtSign'
 import { User } from '../entitys/User'
 import loginValidator from '../middlewares/loginValidator'
-import jwtVerify from '../middlewares/authintications/jwtVerify'
-import authinticateAdmin from '../middlewares/authintications/authinticateAdmin'
+import jwtVerify from '../middlewares/authentications/jwtVerify'
+import authenticateAdmin from '../middlewares/authentications/authenticateAdmin'
 
 const router: Router = Router()
 
@@ -93,7 +93,7 @@ router.post(
 // delete user by id -- for user!
 router.delete(
    '/:id',
-   [jwtVerify, authinticateAdmin],
+   // [jwtVerify, authenticateAdmin],
    async (req: Request, res: Response) => {
       try {
          const isDeleted = await deleteUserById(+req.params.id)

@@ -5,8 +5,8 @@ import {
    deleteVacationById,
    updateVacation,
 } from '../controllers/vacations'
-import authinticateAdmin from '../middlewares/authintications/authinticateAdmin'
-import jwtVerify from '../middlewares/authintications/jwtVerify'
+import authenticateAdmin from '../middlewares/authentications/authenticateAdmin'
+import jwtVerify from '../middlewares/authentications/jwtVerify'
 import createVacationValidator from '../middlewares/formValidatorForVacation'
 import matchedDataForVacation from '../middlewares/matchedDataForVacation'
 
@@ -45,7 +45,7 @@ router.post(
       matchedDataForVacation,
       ...createVacationValidator,
       jwtVerify,
-      authinticateAdmin,
+      authenticateAdmin,
    ],
    async (req: Request, res: Response) => {
       try {
@@ -61,7 +61,7 @@ router.post(
 // update a vacation by id -- must be admin!
 router.patch(
    '/:id',
-   [jwtVerify, authinticateAdmin],
+   [jwtVerify, authenticateAdmin],
    async (req: Request, res: Response) => {
       try {
          const isUpdated = await updateVacation(+req.params.id, req.body)
@@ -78,7 +78,7 @@ router.patch(
 // deletes vacation by id -- must be admin!
 router.delete(
    '/:id',
-   [jwtVerify, authinticateAdmin],
+   [jwtVerify, authenticateAdmin],
    async (req: Request, res: Response) => {
       try {
          const isDeleted = await deleteVacationById(+req.params.id)

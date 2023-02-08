@@ -3,6 +3,7 @@ import express, { Application, Request, Response } from 'express'
 import { AppDataSource } from './data-source'
 import users from './routers/users'
 import vacations from './routers/vacations'
+const cors = require('cors')
 
 //
 ;(async () => {
@@ -13,6 +14,12 @@ import vacations from './routers/vacations'
 
       const app: Application = express()
       app.use(express.json())
+
+      app.use(
+         cors({
+           origin: 'http://localhost:3000',
+         })
+       )
 
       app.use('/users', users)
       app.use('/vacations', vacations)

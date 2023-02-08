@@ -18,7 +18,7 @@ export class Vacation extends BaseEntity {
    @PrimaryGeneratedColumn()
    id: number
 
-   @Column({ type: 'varchar', length: 255, nullable: false })
+   @Column({ type: 'varchar', length: 155, nullable: false })
    discreption: string
 
    @Column({ nullable: false })
